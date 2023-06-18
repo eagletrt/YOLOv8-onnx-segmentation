@@ -9,6 +9,11 @@ namespace YOLO
         classesPath = classesTxtFile;
         cudaEnabled = runWithCuda;
 
+        net_width = modelShape.width;
+        net_height = modelShape.height;
+        seg_width = net_width/4;
+        seg_height = net_height/4;
+
         loadOnnxNetwork();
         // loadClassesFromFile(); The classes are hard-coded for this example
     }
@@ -150,13 +155,15 @@ namespace YOLO
             result.confidence = confidences[idx];
             //temp_mask_proposals.push_back(picked_proposals[idx]);
             
-
+            /*
             std::random_device rd;
             std::mt19937 gen(rd());
             std::uniform_int_distribution<int> dis(100, 255);
             result.color = cv::Scalar(dis(gen),
                                     dis(gen),
                                     dis(gen));
+            */
+            result.color = colors[result.class_id];
 
             result.className = classes[result.class_id];
             result.box = boxes[idx];
@@ -169,15 +176,6 @@ namespace YOLO
     }
 
     cv::Mat Inference::GetMask(const cv::Mat& maskProposal, const cv::Mat& mask_protos, cv::Rect& temp_rect, cv::Size src_img_shape) {
-        int seg_channels = 32;
-        float mask_threshold = 0.5;
-        int seg_width = 120;
-        int seg_height = 160;
-        int net_width = 480;
-        int net_height = 640;
-        //std::cout << "start GetMask" << std::endl;
-        //std::cout << "box:" << temp_rect.x << " " << temp_rect.y << " " << temp_rect.width << " "  << temp_rect.height << std::endl;
-
         //crop from mask_protos
         int rang_x = floor((temp_rect.x / float(net_width)) * seg_width);
         int rang_y = floor((temp_rect.y / float(net_height)) * seg_height);

@@ -42,8 +42,17 @@ namespace YOLO
         bool cudaEnabled{};
 
         std::vector<std::string> classes{"seg_blue_cone", "seg_large_orange_cone", "seg_orange_cone", "seg_unknown_cone", "seg_yellow_cone"};
+        std::vector<cv::Scalar> colors{cv::Scalar(190, 100, 20), cv::Scalar(0, 110, 255), cv::Scalar(0, 110, 255), cv::Scalar(127, 127, 127), cv::Scalar(60, 255, 255)};
 
         cv::Size2f modelShape{};
+
+
+        int seg_channels = 32;
+        float mask_threshold = 0.5;
+        int seg_width = 320;
+        int seg_height = 192;
+        int net_width = 1280;
+        int net_height = 768;
 
         float modelConfidenceThreshold {0.25};
         float modelScoreThreshold      {0.45};
