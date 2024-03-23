@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(yolo_onnx)
+project(${PROJECT_NAME})
 
 # OpenCV
 find_package(OpenCV REQUIRED)
@@ -19,23 +19,11 @@ include_directories(
    ${YOLO_INCLUDE_DIR_INTERNAL}
 )
 
-#link_directories(${PROJECT_SOURCE_DIR}/onnxruntime-linux-x64-1.17.1/lib)
-
 add_library(${PROJECT_NAME} SHARED
     ${PROJECT_SOURCE_DIR}/src/inference_onnx.cpp
 )
 
-target_link_libraries(yolo_onnx
+target_link_libraries(${PROJECT_NAME}
    ${PROJECT_SOURCE_DIR}/onnxruntime-linux-x64-1.17.1/lib
    ${OpenCV_LIBS}
 )
-
-#set(PROJECT_SOURCES
-#    ${PROJECT_SOURCE_DIR}/main.cpp 
-#    ${PROJECT_SOURCE_DIR}/src/inference_onnx.cpp 
-#)
-#add_executable(yolo_interface ${PROJECT_SOURCES})
-#target_link_libraries(yolo_interface
-#    ${OpenCV_LIBS}
-#    onnxruntime
-#)
