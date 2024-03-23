@@ -1,14 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(YOLO_INTERFACE)
-
-# CUDA
-#set(CUDA_TOOLKIT_ROOT_DIR "/usr/local/cuda")
-#find_package(CUDA 11 REQUIRED)
-
-#set(CMAKE_CUDA_STANDARD 11)
-#set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-# !CUDA
+project(yolo_onnx)
 
 # OpenCV
 find_package(OpenCV REQUIRED)
@@ -17,25 +9,33 @@ find_package(OpenCV REQUIRED)
 set(YOLO_INCLUDE_DIR_INTERNAL
     ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/onnxruntime-linux-x64-1.17.1/include
     ${OpenCV_INCLUDE_DIRS}
 )
+
 set(YOLO_INCLUDE_DIR ${YOLO_INCLUDE_DIR_INTERNAL} PARENT_SCOPE)
 
 include_directories(
    ${YOLO_INCLUDE_DIR_INTERNAL}
 )
 
+#link_directories(${PROJECT_SOURCE_DIR}/onnxruntime-linux-x64-1.17.1/lib)
+
 add_library(${PROJECT_NAME} SHARED
-    ${PROJECT_SOURCE_DIR}/src/inference.cpp
+    ${PROJECT_SOURCE_DIR}/src/inference_onnx.cpp
 )
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(yolo_onnx
+   ${PROJECT_SOURCE_DIR}/onnxruntime-linux-x64-1.17.1/lib
    ${OpenCV_LIBS}
 )
 
 #set(PROJECT_SOURCES
-#    main.cpp 
-#    inference.cpp 
+#    ${PROJECT_SOURCE_DIR}/main.cpp 
+#    ${PROJECT_SOURCE_DIR}/src/inference_onnx.cpp 
 #)
 #add_executable(yolo_interface ${PROJECT_SOURCES})
-#target_link_libraries(yolo_interface ${OpenCV_LIBS})
+#target_link_libraries(yolo_interface
+#    ${OpenCV_LIBS}
+#    onnxruntime
+#)

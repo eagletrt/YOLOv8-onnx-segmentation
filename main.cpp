@@ -5,7 +5,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#include "inference.h"
+#include "inference_onnx.h"
 
 using namespace std;
 using namespace cv;
@@ -20,18 +20,11 @@ int main(int argc, char **argv)
 
     bool runOnGPU = true;
 
-    //
-    // Pass in either:
-    //
-    // "yolov8s.onnx" or "yolov5s.onnx"
-    //
-    // To run Inference with yolov8/yolov5 (ONNX)
-    //
-
     // Note that in this example the classes are hard-coded and 'classes.txt' is a place holder.
-    YOLO::Inference inf(projectBasePath + "/best-seg-640-480.onnx", cv::Size(480, 640), "classes.txt", runOnGPU);
+    //YOLO::ConeDetector detector("../best-seg-768-1280.onnx", cv::Size(1280, 768), "classes.txt", runOnGPU);
+    YOLO::ConeDetector detector("../best-seg-768-1280.onnx", cv::Size(640, 384), "classes.txt", runOnGPU);
 
-    cv::VideoCapture capture(projectBasePath + "/test.mp4");
+    cv::VideoCapture capture("../test_compressed.mp4");
     cv::Mat frame;
 
     //cv::Mat frame = cv::imread(projectBasePath + "/ultralytics/assets/bus.jpg");
@@ -46,13 +39,10 @@ int main(int argc, char **argv)
         capture >> frame;
         if (frame.empty())
             break;
-        cv::resize(frame, frame, cv::Size(480, 640));
-        if (frame.empty())
-            break;
 
         // Inference starts here...
         
-        std::vector<YOLO::Detection> output = inf.runInference(frame);
+        std::vector<YOLO::Detection> output = detector.Infer(frame);
 
         int detections = output.size();
         //std::cout << "Number of detections:" << detections << std::endl;
