@@ -157,8 +157,8 @@ namespace YOLO
         std::vector<int> mask_protos_shape = {(int)outputs_1.size[0],(int)outputs_1.size[1],(int)outputs_1.size[2],(int)outputs_1.size[3] };
         int mask_protos_length = outputs_1.size[0]*outputs_1.size[1]*outputs_1.size[2]*outputs_1.size[3];
         
-        std::cout << outputs_0.size << std::endl;
-        std::cout << outputs_1.size << std::endl;
+        //std::cout << outputs_0.size << std::endl;
+        //std::cout << outputs_1.size << std::endl;
         rows = outputs_0.size[2];
         dimensions = outputs_0.size[1];
 
